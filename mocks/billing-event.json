@@ -2,7 +2,7 @@
   "body": "{\"amount\":\"4\",\"source\":\"tok_visa\",\"storage\":21}",
   "requestContext": {
     "identity": {
-      "cognitoIdentityId": "USER-SUB-123"
+      "cognitoIdentityId": "USER-SUB-1234"
     }
   }
 }

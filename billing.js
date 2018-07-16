@@ -29,7 +29,7 @@ export async function main(event, context, callback) {
             currency: "usd"
         });
         await dynamoDbLib.call("put", params);
-        callback(null, success({ status: true }));
+        callback(null, success(params.Item));
     } catch (e) {
         callback(null, failure({ message: e.message }));
     }
