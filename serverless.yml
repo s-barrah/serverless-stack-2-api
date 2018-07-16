@@ -32,8 +32,10 @@ provider:
 # These environment variables are made available to our functions
   # under process.env.
   environment:
-    tableName:
-      Ref: NotesTable
+    NOTES_TABLE: ${self:service}-${opt:stage, self:provider.stage}-notes
+    BILLINGS_TABLE: ${self:service}-${opt:stage, self:provider.stage}-billings
+    #tableName:
+      #Ref: NotesTable
     stripeSecretKey: ${self:custom.environment.stripeSecretKey}
   # 'iamRoleStatement' defines the permission policy for the Lambda function.
   # In this case Lambda functions are granted with permissions to access DynamoDB.
@@ -51,6 +53,7 @@ provider:
       # the specific table for the stage
       Resource:
         - "Fn::GetAtt": [ NotesTable, Arn ]
+
 
 functions:
   # Defines an HTTP API endpoint that calls the main function in create.js
@@ -118,6 +121,9 @@ functions:
 
   billing:
     handler: billing.main
+    environment:
+      tableName:
+        Ref: BillingsTable
     events:
       - http:
           path: billing
@@ -129,8 +135,11 @@ functions:
 resources:
     # DynamoDB
     - ${file(resources/dynamodb-table.yml)}
+    - ${file(resources/dynamodb-billing-table.yml)}
+
     # S3
     - ${file(resources/s3-bucket.yml)}
+
     # Cognito
     - ${file(resources/cognito-user-pool.yml)}
     - ${file(resources/cognito-identity-pool.yml)}
