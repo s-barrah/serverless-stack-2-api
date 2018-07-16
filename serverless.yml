@@ -53,6 +53,7 @@ provider:
       # the specific table for the stage
       Resource:
         - "Fn::GetAtt": [ NotesTable, Arn ]
+        - "Fn::GetAtt": [ BillingsTable, Arn ]
 
 
 functions:
@@ -121,9 +122,6 @@ functions:
 
   billing:
     handler: billing.main
-    environment:
-      tableName:
-        Ref: BillingsTable
     events:
       - http:
           path: billing

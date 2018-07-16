@@ -21,6 +21,7 @@ export async function main(event, context, callback) {
             createdAt: Date.now()
         }
     };
+
     try {
         await stripe.charges.create({
             source,
@@ -30,6 +31,7 @@ export async function main(event, context, callback) {
         });
         await dynamoDbLib.call("put", params);
         callback(null, success(params.Item));
+        //callback(null, success({ status: true }));
     } catch (e) {
         callback(null, failure({ message: e.message }));
     }
